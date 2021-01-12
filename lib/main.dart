@@ -2,10 +2,11 @@ import 'dart:io';
 
 import 'package:current_weather/bloc/weather_bloc.dart';
 import 'package:current_weather/data/repository.dart';
-import 'package:current_weather/weather_model.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'models/weather_model.dart';
 
 void main() {
   runApp(MyApp());

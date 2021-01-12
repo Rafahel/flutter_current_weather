@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:bloc/bloc.dart';
 import 'package:current_weather/data/repository.dart';
-import 'package:current_weather/weather_model.dart';
+import 'package:current_weather/models/weather_model.dart';
 import 'package:equatable/equatable.dart';
 
 part 'weather_event.dart';
