@@ -32,8 +32,11 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       try {
         WeatherModel weather = await weatherRepo.getWeather(event.cityName);
         yield WeatherIsLoadedState(weather);
+      } on Exception catch (e) {
+        yield WeatherIsNotLoadedState(
+            e.toString().replaceFirst("Exception: ", ""));
       } catch (_) {
-        yield WeatherIsNotLoadedState();
+        yield WeatherIsNotLoadedState("Erro Desconhecido");
       }
     } else if (event is ResetWeatherEvent) {
       yield WeatherIsNotSearchedState();
@@ -42,7 +45,17 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       this.weatherList.add(event.getWeather);
     } else if (event is LoadFromDbEvent) {
       this.weatherList.addAll(await db.getAllWeather());
+      this._updateWeatherList();
       yield WeatherIsNotSearchedState();
     }
+  }
+
+  void _updateWeatherList() {
+    this.weatherList.forEach((weather) {
+      weatherRepo.getWeather(weather.cityName).then((updatedWeather) {
+        this.weatherList.add(updatedWeather);
+        db.addWeather(updatedWeather);
+      });
+    });
   }
 }

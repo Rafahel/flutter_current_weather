@@ -1,6 +1,7 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/weather_bloc.dart';
@@ -8,8 +9,7 @@ import 'bloc/weather_bloc.dart';
 class SearchComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    TextEditingController textController = TextEditingController();
-    WeatherBloc weatherBloc = BlocProvider.of<WeatherBloc>(context);
+    TextEditingController _textController = TextEditingController();
     return Container(
       padding: EdgeInsets.only(left: 32, right: 32),
       child: Column(
@@ -28,7 +28,10 @@ class SearchComponent extends StatelessWidget {
             height: 8,
           ),
           TextFormField(
-            controller: textController,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]")),
+            ],
+            controller: _textController,
             decoration: InputDecoration(
                 prefixIcon: Icon(
                   Icons.search,
@@ -54,7 +57,30 @@ class SearchComponent extends StatelessWidget {
             height: 50,
             child: FlatButton(
               onPressed: () {
-                weatherBloc.add(FetchWeatherEvent(textController.text));
+                FocusScope.of(context).unfocus();
+                if (_textController.text.isEmpty) {
+                  Scaffold.of(context).showSnackBar(SnackBar(
+                    content: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.error,
+                          color: Colors.redAccent,
+                        ),
+                        SizedBox(
+                          width: 8,
+                        ),
+                        Text(
+                          "Insira o nome da cidade",
+                          style: TextStyle(fontSize: 18),
+                        )
+                      ],
+                    ),
+                  ));
+                  return;
+                }
+                BlocProvider.of<WeatherBloc>(context)
+                    .add(FetchWeatherEvent(_textController.text));
               },
               child: Text("Buscar",
                   style: TextStyle(

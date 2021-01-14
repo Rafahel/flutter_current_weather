@@ -6,7 +6,7 @@ import 'bloc/weather_bloc.dart';
 import 'city_list.dart';
 import 'current_weather.dart';
 
-class StartPage extends StatelessWidget {
+class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final WeatherBloc weatherBloc = BlocProvider.of<WeatherBloc>(context);
@@ -35,10 +35,34 @@ class StartPage extends StatelessWidget {
               else if (state is WeatherIsLoadedState)
                 return CurrentWeatherWidget(state.getWeather);
               else if (state is WeatherIsNotLoadedState)
-                return Text(
-                  "Error",
-                  style: TextStyle(color: Colors.white),
-                );
+                return Center(
+                    child: Column(
+                  children: [
+                    Text(
+                      state.error,
+                      style: TextStyle(color: Colors.white, fontSize: 28),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Container(
+                      height: 50,
+                      child: FlatButton(
+                        onPressed: () {
+                          weatherBloc.add(ResetWeatherEvent());
+                        },
+                        child: Text("Voltar",
+                            style: TextStyle(
+                                fontSize: 24,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold)),
+                        color: Colors.green,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: new BorderRadius.circular(30.0)),
+                      ),
+                    ),
+                  ],
+                ));
             })
           ],
         ),
