@@ -7,4 +7,23 @@ abstract class WeatherState extends Equatable {
   List<Object> get props => [];
 }
 
-class WeatherInitial extends WeatherState {}
+class WeatherIsNotSearchedState extends WeatherState {}
+
+class LoadingFromDbState extends WeatherState {}
+
+class LoadedFromDbState extends WeatherState {}
+
+class WeatherIsLoadingState extends WeatherState {}
+
+class WeatherIsLoadedState extends WeatherState {
+  final _weather;
+
+  WeatherIsLoadedState(this._weather);
+
+  WeatherModel get getWeather => _weather;
+
+  @override
+  List<Object> get props => [_weather];
+}
+
+class WeatherIsNotLoadedState extends WeatherState {}

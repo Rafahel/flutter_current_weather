@@ -7,9 +7,8 @@ import 'models/weather_model.dart';
 
 class CurrentWeatherWidget extends StatelessWidget {
   final WeatherModel weatherModel;
-  final String cityName;
 
-  CurrentWeatherWidget(this.weatherModel, this.cityName);
+  CurrentWeatherWidget(this.weatherModel);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +19,7 @@ class CurrentWeatherWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
-            cityName,
+            weatherModel.getCityName,
             style: TextStyle(
                 fontSize: 28,
                 color: Colors.white70,
@@ -77,6 +76,24 @@ class CurrentWeatherWidget extends StatelessWidget {
               ),
             ],
           ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(),
+              FlatButton(
+                onPressed: () {
+                  BlocProvider.of<WeatherBloc>(context)
+                      .add(SaveWeatherEvent(weatherModel));
+                },
+                child: Text("Add to favorites",
+                    style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold)),
+                color: Colors.lightGreen,
+              ),
+            ],
+          ),
           SizedBox(
             height: 20,
           ),
@@ -85,7 +102,7 @@ class CurrentWeatherWidget extends StatelessWidget {
             height: 50,
             child: FlatButton(
               onPressed: () {
-                BlocProvider.of<WeatherBloc>(context).add(ResetWeather());
+                BlocProvider.of<WeatherBloc>(context).add(ResetWeatherEvent());
               },
               child: Text("Search Again",
                   style: TextStyle(

@@ -1,4 +1,5 @@
 import 'package:current_weather/bloc/weather_bloc.dart';
+import 'package:current_weather/models/weather_model.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -25,11 +26,12 @@ class SearchPage extends StatelessWidget {
                   fit: BoxFit.contain,
                   animation: "roll",
                 ),
-                height: 300,
-                width: 300,
+                height: 150,
+                width: 150,
               )),
               BlocBuilder<WeatherBloc, WeatherState>(builder: (context, state) {
-                if (state is WeatherIsNotSearched) {
+                if (state is WeatherIsNotSearchedState) {
+                  weatherBloc.add(LoadFromDbEvent());
                   return Container(
                     padding: EdgeInsets.only(left: 32, right: 32),
                     child: Column(
@@ -73,7 +75,7 @@ class SearchPage extends StatelessWidget {
                           child: FlatButton(
                             onPressed: () {
                               weatherBloc
-                                  .add(FetchWeather(textController.text));
+                                  .add(FetchWeatherEvent(textController.text));
                             },
                             child: Text("Search",
                                 style: TextStyle(
@@ -82,15 +84,17 @@ class SearchPage extends StatelessWidget {
                                     fontWeight: FontWeight.bold)),
                             color: Colors.lightBlue,
                           ),
-                        )
+                        ),
+                        SizedBox(height: 20),
+                        CityListWidget()
                       ],
                     ),
                   );
-                } else if (state is WeatherIsLoading)
+                } else if (state is WeatherIsLoadingState ||
+                    state is LoadingFromDbState)
                   return Center(child: CircularProgressIndicator());
-                else if (state is WeatherIsLoaded)
-                  return CurrentWeatherWidget(
-                      state.getWeather, textController.text);
+                else if (state is WeatherIsLoadedState)
+                  return CurrentWeatherWidget(state.getWeather);
                 else
                   return Text(
                     "Error",
@@ -102,5 +106,56 @@ class SearchPage extends StatelessWidget {
         )
       ],
     );
+  }
+}
+
+class CityListWidgetState extends State<CityListWidget> {
+  List<WeatherModel> weatherList = List.empty();
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<WeatherBloc, WeatherState>(builder: (context, state) {
+      weatherList = BlocProvider.of<WeatherBloc>(context).getWeatherList;
+      if (weatherList.isEmpty) {
+        return Container(
+          child: Text("No saved city"),
+        );
+      } else {
+        return Row(
+          children: [
+            Expanded(
+              child: SizedBox(
+                height: 250,
+                child: ListView.builder(
+                  itemCount: weatherList == null ? 0 : weatherList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return ListTile(
+                      leading: Icon(
+                        Icons.location_city,
+                        color: Colors.white70,
+                      ),
+                      title: Text(
+                        weatherList[index].cityName,
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ],
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+        );
+      }
+    });
+  }
+}
+
+class CityListWidget extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return CityListWidgetState();
   }
 }

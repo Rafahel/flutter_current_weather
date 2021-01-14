@@ -7,29 +7,25 @@ abstract class WeatherEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class FetchWeather extends WeatherEvent {
+class FetchWeatherEvent extends WeatherEvent {
   final String cityName;
-  FetchWeather(this.cityName);
+  FetchWeatherEvent(this.cityName);
 
   @override
   List<Object> get props => [cityName];
 }
 
-class ResetWeather extends WeatherEvent {}
+class ResetWeatherEvent extends WeatherEvent {}
 
-class WeatherIsNotSearched extends WeatherState {}
+class LoadFromDbEvent extends WeatherEvent {}
 
-class WeatherIsLoading extends WeatherState {}
-
-class WeatherIsLoaded extends WeatherState {
+class SaveWeatherEvent extends WeatherEvent {
   final _weather;
 
-  WeatherIsLoaded(this._weather);
+  SaveWeatherEvent(this._weather);
 
   WeatherModel get getWeather => _weather;
 
   @override
   List<Object> get props => [_weather];
 }
-
-class WeatherIsNotLoaded extends WeatherState {}

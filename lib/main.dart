@@ -51,10 +51,10 @@ class _MyHomePageState extends State<MyHomePage> {
           onPressed: () {
             final WeatherBloc weatherBloc =
                 BlocProvider.of<WeatherBloc>(context);
-            if (weatherBloc.state is WeatherIsNotSearched) {
+            if (weatherBloc.state is WeatherIsNotSearchedState) {
               exit(0);
             } else {
-              weatherBloc.add(ResetWeather());
+              weatherBloc.add(ResetWeatherEvent());
             }
           },
         ),

@@ -10,14 +10,14 @@ class Repository {
 
     if (result.statusCode != 200) throw Exception();
 
-    return parsedJson(result.body);
+    return parsedJson(city, result.body);
   }
 
-  WeatherModel parsedJson(final response) {
+  WeatherModel parsedJson(final name, final response) {
     final jsonDecoded = json.decode(response);
 
     final jsonWeather = jsonDecoded["main"];
 
-    return WeatherModel.fromJson(jsonWeather);
+    return WeatherModel.fromJson(name, jsonWeather);
   }
 }
