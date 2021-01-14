@@ -38,6 +38,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    BlocProvider.of<WeatherBloc>(context).add(LoadFromDbEvent());
     return Scaffold(
       appBar: AppBar(
         elevation: 0.0,

@@ -11,24 +11,24 @@ part 'weather_state.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   Repository weatherRepo;
-  List<WeatherModel> weatherList = List.empty();
+  Set<WeatherModel> weatherList = Set();
 
   WeatherBloc(this.weatherRepo) : super() {
-    db.getAllWeather().then((value) => weatherList = value);
+    this.add(LoadFromDbEvent());
   }
 
   DatabaseProvider db = DatabaseProvider.db;
 
-  List<WeatherModel> get getWeatherList => weatherList;
+  List<WeatherModel> get getWeatherList =>
+      weatherList.toList()..sort((a, b) => a.cityName.compareTo(b.cityName));
 
   @override
-  WeatherState get initialState => WeatherIsNotSearchedState();
+  WeatherState get initialState => WeatherIsLoadingState();
 
   @override
   Stream<WeatherState> mapEventToState(WeatherEvent event) async* {
     if (event is FetchWeatherEvent) {
       yield WeatherIsLoadingState();
-
       try {
         WeatherModel weather = await weatherRepo.getWeather(event.cityName);
         yield WeatherIsLoadedState(weather);
@@ -41,7 +41,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       db.addWeather(event.getWeather);
       this.weatherList.add(event.getWeather);
     } else if (event is LoadFromDbEvent) {
-      this.weatherList = await db.getAllWeather();
+      this.weatherList.addAll(await db.getAllWeather());
       yield WeatherIsNotSearchedState();
     }
   }
