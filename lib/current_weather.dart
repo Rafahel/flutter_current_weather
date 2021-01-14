@@ -45,7 +45,7 @@ class CurrentWeatherWidget extends StatelessWidget {
                     fontWeight: FontWeight.bold),
               ),
               Text(
-                "Temperature",
+                "Temperatura",
                 style: TextStyle(
                   fontSize: 12,
                   color: Colors.white70,
@@ -63,7 +63,7 @@ class CurrentWeatherWidget extends StatelessWidget {
                             color: Colors.white70,
                             fontWeight: FontWeight.bold),
                       ),
-                      Text("Maximun Temperature",
+                      Text("Temperatura Máxima",
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.white70,
@@ -79,7 +79,7 @@ class CurrentWeatherWidget extends StatelessWidget {
                             color: Colors.white70,
                             fontWeight: FontWeight.bold),
                       ),
-                      Text("Minimum Temperature",
+                      Text("Temperatura Mínima",
                           style: TextStyle(
                             fontSize: 12,
                             color: Colors.white70,
@@ -99,12 +99,14 @@ class CurrentWeatherWidget extends StatelessWidget {
                     BlocProvider.of<WeatherBloc>(context)
                         .add(SaveWeatherEvent(weatherModel));
                   },
-                  child: Text("Add to favorites",
+                  child: Text("Favoritar",
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
                           fontWeight: FontWeight.bold)),
                   color: Colors.lightGreen,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0)),
                 ),
               ),
               SizedBox(
@@ -118,12 +120,14 @@ class CurrentWeatherWidget extends StatelessWidget {
                     BlocProvider.of<WeatherBloc>(context)
                         .add(ResetWeatherEvent());
                   },
-                  child: Text("Search Again",
+                  child: Text("Voltar",
                       style: TextStyle(
                           fontSize: 18,
                           color: Colors.white,
                           fontWeight: FontWeight.bold)),
                   color: Colors.lightBlue,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30.0)),
                 ),
               ),
             ],

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/weather_bloc.dart';
-import 'city_list.dart';
 
 class SearchComponent extends StatelessWidget {
   @override
@@ -14,6 +13,7 @@ class SearchComponent extends StatelessWidget {
     return Container(
       padding: EdgeInsets.only(left: 32, right: 32),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Container(
             child: FlareActor(
@@ -35,14 +35,14 @@ class SearchComponent extends StatelessWidget {
                   color: Colors.white70,
                 ),
                 focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
+                    borderSide: BorderSide(
+                        color: Colors.white, style: BorderStyle.solid)),
+                enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15)),
                     borderSide: BorderSide(
                         color: Colors.white70, style: BorderStyle.solid)),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10)),
-                    borderSide: BorderSide(
-                        color: Colors.white70, style: BorderStyle.solid)),
-                hintText: "City Name",
+                hintText: "Cidade",
                 hintStyle: TextStyle(color: Colors.white70)),
             style: TextStyle(color: Colors.white70),
           ),
@@ -56,16 +56,16 @@ class SearchComponent extends StatelessWidget {
               onPressed: () {
                 weatherBloc.add(FetchWeatherEvent(textController.text));
               },
-              child: Text("Search",
+              child: Text("Buscar",
                   style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 24,
                       color: Colors.white,
                       fontWeight: FontWeight.bold)),
-              color: Colors.lightBlue,
+              color: Colors.green,
+              shape: RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(30.0)),
             ),
           ),
-          SizedBox(height: 20),
-          CityListWidget()
         ],
       ),
     );

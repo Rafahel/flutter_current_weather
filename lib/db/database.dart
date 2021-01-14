@@ -24,8 +24,9 @@ class DatabaseProvider {
       join(await getDatabasesPath(), "weatherDatabase.db"),
       // When the database is first created, create a table to store dogs.
       onCreate: (db, version) {
-        return db.execute(
-            "CREATE TABLE weather(cityName TEXT PRIMARY KEY, temp FLOAT, tempMax FLOAT, tempMin FLOAT, description TEXT, icon TEXT)");
+        String query =
+            "CREATE TABLE weather(id INT PRIMARY KEY, cityName TEXT, temp FLOAT, tempMax FLOAT, tempMin FLOAT, description TEXT, icon TEXT)";
+        return db.execute(query);
       },
       // Set the version. This executes the onCreate function and provides a
       // path to perform database upgrades and downgrades.
@@ -44,8 +45,14 @@ class DatabaseProvider {
     final db = await database;
     List<Map<String, dynamic>> map = await db.query("weather");
     return List.generate(map.length, (i) {
-      return WeatherModel(map[i]["cityName"], map[i]["temp"], map[i]["tempMax"],
-          map[i]["tempMin"], map[i]["description"], map[i]["icon"]);
+      return WeatherModel(
+          map[i]["id"],
+          map[i]["cityName"],
+          map[i]["temp"],
+          map[i]["tempMax"],
+          map[i]["tempMin"],
+          map[i]["description"],
+          map[i]["icon"]);
     });
   }
 }

@@ -15,7 +15,6 @@ class Repository {
 
   WeatherModel parsedJson(final name, final response) {
     final jsonDecoded = json.decode(response);
-
-    return WeatherModel.fromJson(name, jsonDecoded);
+    return WeatherModel.fromJson(jsonDecoded);
   }
 }

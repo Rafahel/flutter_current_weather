@@ -15,14 +15,14 @@ class CityListWidgetState extends State<CityListWidget> {
           BlocProvider.of<WeatherBloc>(context).getWeatherList.toList();
       if (weatherList.isEmpty) {
         return Container(
-          child: Text("No saved city"),
+          child: Container(),
         );
       } else {
         return Row(
           children: [
             Expanded(
               child: SizedBox(
-                height: 250,
+                height: MediaQuery.of(context).size.height / 2,
                 child: Container(
                   child: ListView.builder(
                     itemCount: weatherList == null ? 0 : weatherList.length,
@@ -35,7 +35,7 @@ class CityListWidgetState extends State<CityListWidget> {
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.grey[800],
                           ),
-                          child: Stack(
+                          child: Column(
                             children: [
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,18 +56,19 @@ class CityListWidgetState extends State<CityListWidget> {
                                               fontSize: 26,
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold)),
-                                      Container(
-                                        margin: EdgeInsets.only(left: 16),
-                                        child: FlareActor(
-                                          "assets/weather_${weatherList[index].icon}.flr",
-                                          fit: BoxFit.contain,
-                                          animation:
-                                              "${weatherList[index].icon}",
-                                        ),
-                                        height: 85,
-                                        width: 85,
-                                      ),
                                     ],
+                                  ),
+                                  Center(
+                                    child: Container(
+                                      margin: EdgeInsets.only(left: 16),
+                                      child: FlareActor(
+                                        "assets/weather_${weatherList[index].icon}.flr",
+                                        fit: BoxFit.contain,
+                                        animation: "${weatherList[index].icon}",
+                                      ),
+                                      height: 85,
+                                      width: 85,
+                                    ),
                                   ),
                                   SizedBox(
                                     height: 8,
@@ -80,7 +81,7 @@ class CityListWidgetState extends State<CityListWidget> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                              "Temperature: ${weatherList[index].temp} C",
+                                              "Temperatura: ${weatherList[index].temp} C",
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   color: Colors.white,
@@ -89,7 +90,7 @@ class CityListWidgetState extends State<CityListWidget> {
                                             height: 8,
                                           ),
                                           Text(
-                                              "Description: ${weatherList[index].description}",
+                                              "Descrição: ${weatherList[index].description}",
                                               style: TextStyle(
                                                   fontSize: 18,
                                                   color: Colors.white,

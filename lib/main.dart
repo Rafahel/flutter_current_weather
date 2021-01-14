@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:current_weather/bloc/weather_bloc.dart';
 import 'package:current_weather/data/repository.dart';
-import 'package:current_weather/search_page.dart';
+import 'package:current_weather/start_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -60,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
           },
         ),
       ),
-      body: SearchPage(),
+      body: StartPage(),
       backgroundColor: Colors.grey[900],
       resizeToAvoidBottomInset: false,
       // This trailing comma makes auto-formatting nicer for build methods.

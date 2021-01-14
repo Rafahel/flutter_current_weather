@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
 
 class WeatherModel extends Equatable {
+  final int id;
   final String cityName;
   final double temp;
   final double tempMax;
@@ -13,13 +14,14 @@ class WeatherModel extends Equatable {
   double get getMinTemp => tempMin;
   String get getCityName => cityName;
 
-  WeatherModel(this.cityName, this.temp, this.tempMax, this.tempMin,
+  WeatherModel(this.id, this.cityName, this.temp, this.tempMax, this.tempMin,
       this.description, this.icon);
   // WeatherModel.withName(this.cityName, this.temp, this.tempMax, this.tempMin);
 
-  factory WeatherModel.fromJson(String cityName, Map<String, dynamic> json) {
+  factory WeatherModel.fromJson(Map<String, dynamic> json) {
     return WeatherModel(
-        cityName,
+        json["id"],
+        json["name"],
         json["main"]["temp"].toDouble(),
         json["main"]["temp_max"].toDouble(),
         json["main"]["temp_min"].toDouble(),
