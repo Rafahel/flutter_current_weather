@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Current Weather App',
         theme:
             ThemeData(primarySwatch: Colors.blue, highlightColor: Colors.amber),
         home: BlocProvider(
@@ -62,7 +62,6 @@ class _MyHomePageState extends State<MyHomePage> {
       body: MainPage(),
       backgroundColor: Colors.grey[900],
       resizeToAvoidBottomInset: false,
-      // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
