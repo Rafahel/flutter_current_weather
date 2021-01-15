@@ -28,8 +28,12 @@ class SearchComponent extends StatelessWidget {
             height: 8,
           ),
           TextFormField(
+            textInputAction: TextInputAction.search,
+            onFieldSubmitted: (value) {
+              _onWeatherSearch(context, _textController.text);
+            },
             inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]")),
+              FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
             ],
             controller: _textController,
             decoration: InputDecoration(
@@ -57,30 +61,7 @@ class SearchComponent extends StatelessWidget {
             height: 50,
             child: FlatButton(
               onPressed: () {
-                FocusScope.of(context).unfocus();
-                if (_textController.text.isEmpty) {
-                  Scaffold.of(context).showSnackBar(SnackBar(
-                    content: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.error,
-                          color: Colors.redAccent,
-                        ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        Text(
-                          "Insira o nome da cidade",
-                          style: TextStyle(fontSize: 18),
-                        )
-                      ],
-                    ),
-                  ));
-                  return;
-                }
-                BlocProvider.of<WeatherBloc>(context)
-                    .add(FetchWeatherEvent(_textController.text));
+                _onWeatherSearch(context, _textController.text);
               },
               child: Text("Buscar",
                   style: TextStyle(
@@ -95,5 +76,31 @@ class SearchComponent extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  _onWeatherSearch(BuildContext context, text) {
+    FocusScope.of(context).unfocus();
+    if (text.isEmpty) {
+      Scaffold.of(context).showSnackBar(SnackBar(
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.error,
+              color: Colors.redAccent,
+            ),
+            SizedBox(
+              width: 8,
+            ),
+            Text(
+              "Insira o nome da cidade",
+              style: TextStyle(fontSize: 18),
+            )
+          ],
+        ),
+      ));
+      return;
+    }
+    BlocProvider.of<WeatherBloc>(context).add(FetchWeatherEvent(text));
   }
 }
