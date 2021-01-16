@@ -4,31 +4,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/weather_bloc.dart';
+import 'current_weather.dart';
 import 'models/weather_model.dart';
 
 class CityListWidgetState extends State<CityListWidget> {
   List<WeatherModel> _weatherList = List.empty();
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      new GlobalKey<RefreshIndicatorState>();
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<WeatherBloc, WeatherState>(builder: (context, state) {
       _weatherList =
           BlocProvider.of<WeatherBloc>(context).getWeatherList.toList();
-      if (_weatherList.isEmpty) {
-        return Container(
-          child: Container(),
-        );
-      } else {
-        return Row(
-          children: [
-            Expanded(
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height / 2,
-                child: Container(
-                  child: Scrollbar(
-                    thickness: 3,
-                    radius: Radius.circular(8),
-                    child: Padding(
-                      padding: EdgeInsets.only(left: 16, right: 16),
+
+      return Row(
+        children: [
+          Expanded(
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height / 2,
+              child: Container(
+                child: Scrollbar(
+                  thickness: 3,
+                  radius: Radius.circular(8),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 16, right: 16),
+                    child: RefreshIndicator(
+                      key: _refreshIndicatorKey,
+                      onRefresh: () async => {
+                        BlocProvider.of<WeatherBloc>(context)
+                            .add(RefreshCityListEvent())
+                      },
                       child: ListView.builder(
                         scrollDirection: Axis.vertical,
                         itemCount:
@@ -48,12 +54,13 @@ class CityListWidgetState extends State<CityListWidget> {
                                   splashColor: Colors.amber,
                                   onTap: () {
                                     BlocProvider.of<WeatherBloc>(context).add(
-                                        FetchWeatherEvent(
-                                            _weatherList[index].cityName));
+                                        OpenSelectedWeatherScreenEvent(
+                                            _weatherList[index]));
                                   },
                                   borderRadius: BorderRadius.circular(10),
                                   child: Container(
-                                    padding: EdgeInsets.all(16),
+                                    padding: EdgeInsets.only(
+                                        top: 16, left: 16, right: 16),
                                     child: Column(
                                       children: [
                                         Column(
@@ -99,7 +106,7 @@ class CityListWidgetState extends State<CityListWidget> {
                                             SizedBox(
                                               height: 8,
                                             ),
-                                            Row(
+                                            Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
                                               children: [
@@ -125,8 +132,28 @@ class CityListWidgetState extends State<CityListWidget> {
                                                             color: Colors.white,
                                                             fontWeight:
                                                                 FontWeight
+                                                                    .bold)),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  height: 8,
+                                                ),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                        "Atualizado em: ${_weatherList[index].getLastUpdate}",
+                                                        style: TextStyle(
+                                                            fontSize: 12,
+                                                            color: Colors.white,
+                                                            fontWeight:
+                                                                FontWeight
                                                                     .bold))
                                                   ],
+                                                ),
+                                                SizedBox(
+                                                  height: 8,
                                                 ),
                                               ],
                                             )
@@ -146,10 +173,10 @@ class CityListWidgetState extends State<CityListWidget> {
                 ),
               ),
             ),
-          ],
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-        );
-      }
+          ),
+        ],
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      );
     });
   }
 }

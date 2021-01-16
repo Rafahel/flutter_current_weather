@@ -7,9 +7,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/weather_bloc.dart';
 
 class SearchComponent extends StatelessWidget {
+  static TextEditingController _textController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    TextEditingController _textController = TextEditingController();
     return Container(
       padding: EdgeInsets.only(left: 32, right: 32),
       child: Column(
@@ -39,7 +40,7 @@ class SearchComponent extends StatelessWidget {
             decoration: InputDecoration(
                 prefixIcon: Icon(
                   Icons.search,
-                  color: Colors.white70,
+                  color: Colors.white,
                 ),
                 focusedBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
@@ -48,10 +49,10 @@ class SearchComponent extends StatelessWidget {
                 enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                     borderSide: BorderSide(
-                        color: Colors.white70, style: BorderStyle.solid)),
+                        color: Colors.white, style: BorderStyle.solid)),
                 hintText: "Cidade",
-                hintStyle: TextStyle(color: Colors.white70)),
-            style: TextStyle(color: Colors.white70),
+                hintStyle: TextStyle(color: Colors.white)),
+            style: TextStyle(color: Colors.white),
           ),
           SizedBox(
             height: 10,

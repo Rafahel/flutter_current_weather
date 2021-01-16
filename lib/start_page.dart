@@ -9,62 +9,76 @@ import 'current_weather.dart';
 class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final WeatherBloc weatherBloc = BlocProvider.of<WeatherBloc>(context);
-    final TextEditingController textController = TextEditingController();
-
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Column(
-          children: [
-            BlocBuilder<WeatherBloc, WeatherState>(builder: (context, state) {
-              if (state is WeatherIsNotSearchedState) {
-                return Column(
-                  children: [
-                    SearchComponent(),
-                    Padding(
-                      padding: EdgeInsets.only(top: 16, left: 16, right: 16),
-                      child: CityListWidget(),
-                    )
-                  ],
-                );
-              } else if (state is WeatherIsLoadingState ||
-                  state is LoadingFromDbState)
-                return Center(child: CircularProgressIndicator());
-              else if (state is WeatherIsLoadedState)
-                return CurrentWeatherWidget(state.getWeather);
-              else if (state is WeatherIsNotLoadedState)
-                return Center(
-                    child: Column(
-                  children: [
-                    Text(
-                      state.error,
-                      style: TextStyle(color: Colors.white, fontSize: 28),
-                    ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Container(
-                      height: 50,
-                      child: FlatButton(
-                        onPressed: () {
-                          weatherBloc.add(ResetWeatherEvent());
-                        },
-                        child: Text("Voltar",
-                            style: TextStyle(
-                                fontSize: 24,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold)),
-                        color: Colors.green,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
+        Padding(
+          padding: EdgeInsets.only(top: 64),
+          child: Column(
+            children: [
+              SearchComponent(),
+              BlocListener<WeatherBloc, WeatherState>(
+                listener: (context, state) async {
+                  if (state is WeatherIsNotLoadedState) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          backgroundColor: Colors.grey[900],
+                          title: new Text(
+                            "Erro",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          content: new Text(
+                            state.error,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          actions: <Widget>[
+                            new FlatButton(
+                              child: new Text("Fechar",
+                                  style: TextStyle(fontSize: 16)),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                  if (state is OpenSelectedWeatherScreenState) {
+                    final event = await Navigator.pushNamed(
+                      context,
+                      CurrentWeatherScreen.routeName,
+                      arguments: ScreenArguments(
+                        state.getWeather,
                       ),
-                    ),
-                  ],
-                ));
-            })
-          ],
+                    );
+                    BlocProvider.of<WeatherBloc>(context).add(event);
+                  }
+                },
+                child: BlocBuilder<WeatherBloc, WeatherState>(
+                    builder: (context, state) {
+                  if (state is WeatherIsLoadingState ||
+                      state is LoadingFromDbState)
+                    return Padding(
+                        padding: EdgeInsets.only(top: 64),
+                        child: Center(child: CircularProgressIndicator()));
+                  else {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding:
+                              EdgeInsets.only(top: 16, left: 16, right: 16),
+                          child: CityListWidget(),
+                        )
+                      ],
+                    );
+                  }
+                }),
+              )
+            ],
+          ),
         ),
       ],
     );

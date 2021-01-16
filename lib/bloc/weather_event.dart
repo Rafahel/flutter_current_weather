@@ -29,3 +29,16 @@ class SaveWeatherEvent extends WeatherEvent {
   @override
   List<Object> get props => [_weather];
 }
+
+class RefreshCityListEvent extends WeatherEvent {}
+
+class OpenSelectedWeatherScreenEvent extends WeatherEvent {
+  final _weather;
+
+  OpenSelectedWeatherScreenEvent(this._weather);
+
+  WeatherModel get getWeather => _weather;
+
+  @override
+  List<Object> get props => [_weather];
+}

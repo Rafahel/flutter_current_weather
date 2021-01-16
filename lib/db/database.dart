@@ -25,7 +25,7 @@ class DatabaseProvider {
       // When the database is first created, create a table to store dogs.
       onCreate: (db, version) {
         String query =
-            "CREATE TABLE weather(id INT PRIMARY KEY, cityName TEXT, temp FLOAT, tempMax FLOAT, tempMin FLOAT, description TEXT, icon TEXT)";
+            "CREATE TABLE weather(id INT PRIMARY KEY, cityName TEXT, temp FLOAT, tempMax FLOAT, tempMin FLOAT, description TEXT, icon TEXT, lastUpdate INT)";
         return db.execute(query);
       },
       // Set the version. This executes the onCreate function and provides a
@@ -52,7 +52,8 @@ class DatabaseProvider {
           map[i]["tempMax"],
           map[i]["tempMin"],
           map[i]["description"],
-          map[i]["icon"]);
+          map[i]["icon"],
+          map[i]["lastUpdate"]);
     });
   }
 }

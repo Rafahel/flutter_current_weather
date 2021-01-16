@@ -30,3 +30,18 @@ class WeatherIsNotLoadedState extends WeatherState {
   String error;
   WeatherIsNotLoadedState(this.error);
 }
+
+class CityListUpdatingState extends WeatherState {}
+
+class CityListUpdatedState extends WeatherState {}
+
+class OpenSelectedWeatherScreenState extends WeatherState {
+  final _weather;
+
+  OpenSelectedWeatherScreenState(this._weather);
+
+  WeatherModel get getWeather => _weather;
+
+  @override
+  List<Object> get props => [_weather];
+}

@@ -7,11 +7,12 @@ import 'package:current_weather/models/weather_model.dart';
 import 'package:equatable/equatable.dart';
 
 part 'weather_event.dart';
+
 part 'weather_state.dart';
 
 class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   Repository weatherRepo;
-  Set<WeatherModel> weatherList = Set();
+  Set<WeatherModel> weatherList = Set<WeatherModel>();
 
   WeatherBloc(this.weatherRepo) : super() {
     this.add(LoadFromDbEvent());
@@ -31,7 +32,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
       yield WeatherIsLoadingState();
       try {
         WeatherModel weather = await weatherRepo.getWeather(event.cityName);
-        yield WeatherIsLoadedState(weather);
+        yield OpenSelectedWeatherScreenState(weather);
       } on Exception catch (e) {
         yield WeatherIsNotLoadedState(
             e.toString().replaceFirst("Exception: ", ""));
@@ -43,19 +44,34 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
     } else if (event is SaveWeatherEvent) {
       db.addWeather(event.getWeather);
       this.weatherList.add(event.getWeather);
-    } else if (event is LoadFromDbEvent) {
-      this.weatherList.addAll(await db.getAllWeather());
-      this._updateWeatherList();
       yield WeatherIsNotSearchedState();
+    } else if (event is LoadFromDbEvent) {
+      await this._getCityListFromDb();
+      await this._updateAsync();
+      yield WeatherIsNotSearchedState();
+    } else if (event is RefreshCityListEvent) {
+      yield WeatherIsLoadingState();
+      await this._updateAsync();
+      yield WeatherIsNotSearchedState();
+    } else if (event is OpenSelectedWeatherScreenEvent) {
+      yield OpenSelectedWeatherScreenState(event.getWeather);
     }
   }
 
-  void _updateWeatherList() {
-    this.weatherList.forEach((weather) {
-      weatherRepo.getWeather(weather.cityName).then((updatedWeather) {
-        this.weatherList.add(updatedWeather);
-        db.addWeather(updatedWeather);
-      });
+  Future<void> _getCityListFromDb() async {
+    var list = await db.getAllWeather();
+    this.weatherList.addAll(list);
+  }
+
+  Future<void> _updateAsync() async {
+    List<WeatherModel> updatedList = List<WeatherModel>();
+    await Future.forEach(getWeatherList, (element) async {
+      WeatherModel updatedWeather =
+          await weatherRepo.getWeather(element.cityName);
+      updatedList.add(updatedWeather);
+      db.addWeather(updatedWeather);
     });
+    this.weatherList.clear();
+    this.weatherList.addAll(updatedList);
   }
 }

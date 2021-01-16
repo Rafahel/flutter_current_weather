@@ -1,10 +1,63 @@
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/weather_bloc.dart';
 import 'models/weather_model.dart';
+
+class ScreenArguments {
+  final WeatherModel weather;
+  ScreenArguments(this.weather);
+}
+
+class CurrentWeatherScreen extends StatelessWidget {
+  static const routeName = '/currentWeatherScreen';
+
+  @override
+  Widget build(BuildContext context) {
+    final ScreenArguments args = ModalRoute.of(context).settings.arguments;
+
+    return Scaffold(
+      body: Center(
+        child: Container(
+            child: Stack(
+          children: [
+            Container(
+              child: FlareActor(
+                "assets/background.flr",
+                fit: BoxFit.fill,
+                animation: "0",
+              ),
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
+            ),
+            AppBar(
+              elevation: 0.0,
+              backgroundColor: Colors.transparent,
+              title: Text(
+                'Current Weather App',
+                style: TextStyle(color: Colors.white),
+              ),
+              leading: IconButton(
+                icon: Icon(
+                  Icons.arrow_back,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.pop(context, ResetWeatherEvent());
+                },
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 16),
+              child: CurrentWeatherWidget(args.weather),
+            ),
+          ],
+        )),
+      ),
+    );
+  }
+}
 
 class CurrentWeatherWidget extends StatelessWidget {
   final WeatherModel weatherModel;
@@ -24,7 +77,6 @@ class CurrentWeatherWidget extends StatelessWidget {
               Container(
                 child: FlareActor(
                   "assets/weather_${weatherModel.icon}.flr",
-                  fit: BoxFit.contain,
                   animation: "${weatherModel.icon}",
                 ),
                 height: 150,
@@ -34,21 +86,33 @@ class CurrentWeatherWidget extends StatelessWidget {
                 weatherModel.getCityName,
                 style: TextStyle(
                     fontSize: 28,
-                    color: Colors.white70,
+                    color: Colors.white,
                     fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 8,
+              ),
+              Text(
+                  "${weatherModel.description[0].toUpperCase() + weatherModel.description.substring(1)}",
+                  style: TextStyle(
+                      fontSize: 22,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold)),
+              SizedBox(
+                height: 8,
               ),
               Text(
                 "${weatherModel.temp.round().toInt()} C",
                 style: TextStyle(
                     fontSize: 28,
-                    color: Colors.white70,
+                    color: Colors.white,
                     fontWeight: FontWeight.bold),
               ),
               Text(
                 "Temperatura",
                 style: TextStyle(
                   fontSize: 12,
-                  color: Colors.white70,
+                  color: Colors.white,
                 ),
               ),
               Row(
@@ -60,13 +124,13 @@ class CurrentWeatherWidget extends StatelessWidget {
                         "${weatherModel.getMaxTemp.round().toInt()} C",
                         style: TextStyle(
                             fontSize: 28,
-                            color: Colors.white70,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold),
                       ),
                       Text("Temperatura Máxima",
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.white70,
+                            color: Colors.white,
                           ))
                     ],
                   ),
@@ -76,13 +140,13 @@ class CurrentWeatherWidget extends StatelessWidget {
                         "${weatherModel.getMinTemp.round().toInt()} C",
                         style: TextStyle(
                             fontSize: 28,
-                            color: Colors.white70,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold),
                       ),
                       Text("Temperatura Mínima",
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.white70,
+                            color: Colors.white,
                           ))
                     ],
                   ),
@@ -96,8 +160,7 @@ class CurrentWeatherWidget extends StatelessWidget {
                 height: 50,
                 child: FlatButton(
                   onPressed: () {
-                    BlocProvider.of<WeatherBloc>(context)
-                        .add(SaveWeatherEvent(weatherModel));
+                    Navigator.pop(context, SaveWeatherEvent(weatherModel));
                   },
                   child: Text("Favoritar",
                       style: TextStyle(
@@ -117,8 +180,7 @@ class CurrentWeatherWidget extends StatelessWidget {
                 height: 50,
                 child: FlatButton(
                   onPressed: () {
-                    BlocProvider.of<WeatherBloc>(context)
-                        .add(ResetWeatherEvent());
+                    Navigator.pop(context, ResetWeatherEvent());
                   },
                   child: Text("Voltar",
                       style: TextStyle(

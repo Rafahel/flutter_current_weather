@@ -1,13 +1,16 @@
 import 'dart:io';
 
 import 'package:current_weather/bloc/weather_bloc.dart';
+import 'package:current_weather/current_weather.dart';
 import 'package:current_weather/data/repository.dart';
 import 'package:current_weather/start_page.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 void main() {
+  initializeDateFormatting('pt_BR', null);
   runApp(MyApp());
 }
 
@@ -16,6 +19,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        routes: {
+          CurrentWeatherScreen.routeName: (context) => CurrentWeatherScreen(),
+        },
         title: 'Current Weather App',
         theme:
             ThemeData(primarySwatch: Colors.blue, highlightColor: Colors.amber),
