@@ -1,68 +1,14 @@
 import 'package:flare_flutter/flare_actor.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 import 'bloc/weather_bloc.dart';
 import 'models/weather_model.dart';
 
-class ScreenArguments {
-  final WeatherModel weather;
-  ScreenArguments(this.weather);
-}
-
-class CurrentWeatherScreen extends StatelessWidget {
-  static const routeName = '/currentWeatherScreen';
-
-  @override
-  Widget build(BuildContext context) {
-    final ScreenArguments args = ModalRoute.of(context).settings.arguments;
-
-    return Scaffold(
-      body: Center(
-        child: Container(
-            child: Stack(
-          children: [
-            Container(
-              child: FlareActor(
-                "assets/background.flr",
-                fit: BoxFit.fill,
-                animation: "0",
-              ),
-              height: MediaQuery.of(context).size.height,
-              width: MediaQuery.of(context).size.width,
-            ),
-            AppBar(
-              elevation: 0.0,
-              backgroundColor: Colors.transparent,
-              title: Text(
-                'Current Weather App',
-                style: TextStyle(color: Colors.white),
-              ),
-              leading: IconButton(
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                ),
-                onPressed: () {
-                  Navigator.pop(context, ResetWeatherEvent());
-                },
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 16),
-              child: CurrentWeatherWidget(args.weather),
-            ),
-          ],
-        )),
-      ),
-    );
-  }
-}
-
-class CurrentWeatherWidget extends StatelessWidget {
+class SelectedWeatherWidget extends StatelessWidget {
   final WeatherModel weatherModel;
 
-  CurrentWeatherWidget(this.weatherModel);
+  SelectedWeatherWidget(this.weatherModel);
 
   @override
   Widget build(BuildContext context) {

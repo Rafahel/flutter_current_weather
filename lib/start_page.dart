@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/weather_bloc.dart';
 import 'city_list.dart';
-import 'current_weather.dart';
+import 'selected_weather.dart';
 
 class MainPage extends StatelessWidget {
   @override
@@ -49,8 +49,8 @@ class MainPage extends StatelessWidget {
                   if (state is OpenSelectedWeatherScreenState) {
                     final event = await Navigator.pushNamed(
                       context,
-                      CurrentWeatherScreen.routeName,
-                      arguments: ScreenArguments(
+                      SelectedWeatherScreen.routeName,
+                      arguments: SelectedWeatherScreenArgs(
                         state.getWeather,
                       ),
                     );

@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'bloc/weather_bloc.dart';
-import 'current_weather.dart';
 import 'models/weather_model.dart';
 
 class CityListWidgetState extends State<CityListWidget> {
@@ -41,131 +40,125 @@ class CityListWidgetState extends State<CityListWidget> {
                             _weatherList == null ? 0 : _weatherList.length,
                         itemBuilder: (BuildContext context, int index) {
                           return Container(
-                            padding: EdgeInsets.only(bottom: 8),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.grey[800],
-                              ),
-                              child: Material(
-                                color: Colors.transparent,
-                                borderRadius: BorderRadius.circular(10),
-                                child: InkWell(
-                                  splashColor: Colors.amber,
-                                  onTap: () {
-                                    BlocProvider.of<WeatherBloc>(context).add(
-                                        OpenSelectedWeatherScreenEvent(
-                                            _weatherList[index]));
-                                  },
+                              padding: EdgeInsets.only(bottom: 8),
+                              child: Card(
+                                shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
-                                  child: Container(
-                                    padding: EdgeInsets.only(
-                                        top: 16, left: 16, right: 16),
-                                    child: Column(
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Icon(
-                                                  Icons.location_on,
-                                                  color: Colors.orange[900],
-                                                  size: 35,
-                                                ),
-                                                SizedBox(
-                                                  width: 8,
-                                                ),
-                                                Text(
-                                                    _weatherList[index]
-                                                        .cityName,
-                                                    style: TextStyle(
-                                                        fontSize: 26,
-                                                        color: Colors.white,
-                                                        fontWeight:
-                                                            FontWeight.bold)),
-                                              ],
-                                            ),
-                                            Center(
-                                              child: Container(
-                                                margin:
-                                                    EdgeInsets.only(left: 16),
-                                                child: FlareActor(
-                                                  "assets/weather_${_weatherList[index].icon}.flr",
-                                                  fit: BoxFit.contain,
-                                                  animation:
-                                                      "${_weatherList[index].icon}",
-                                                ),
-                                                height: 85,
-                                                width: 85,
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: InkWell(
+                                    splashColor: Colors.amber,
+                                    onTap: () {
+                                      BlocProvider.of<WeatherBloc>(context).add(
+                                          OpenSelectedWeatherScreenEvent(
+                                              _weatherList[index]));
+                                    },
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Padding(
+                                      padding: EdgeInsets.all(16),
+                                      child: Column(
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(
+                                                    Icons.location_on,
+                                                    color: Colors.orange[900],
+                                                    size: 35,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 8,
+                                                  ),
+                                                  Text(
+                                                      _weatherList[index]
+                                                          .cityName,
+                                                      style: TextStyle(
+                                                          fontSize: 26,
+                                                          fontWeight:
+                                                              FontWeight.bold)),
+                                                ],
                                               ),
-                                            ),
-                                            SizedBox(
-                                              height: 8,
-                                            ),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Column(
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
-                                                  children: [
-                                                    Text(
-                                                        "Temperatura: ${_weatherList[index].temp} C",
-                                                        style: TextStyle(
-                                                            fontSize: 18,
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                    SizedBox(
-                                                      height: 8,
-                                                    ),
-                                                    Text(
-                                                        "Descrição: ${_weatherList[index].description[0].toUpperCase() + _weatherList[index].description.substring(1)}",
-                                                        style: TextStyle(
-                                                            fontSize: 18,
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold)),
-                                                  ],
+                                              Center(
+                                                child: Container(
+                                                  margin:
+                                                      EdgeInsets.only(left: 16),
+                                                  child: FlareActor(
+                                                    "assets/weather_${_weatherList[index].icon}.flr",
+                                                    fit: BoxFit.contain,
+                                                    animation:
+                                                        "${_weatherList[index].icon}",
+                                                  ),
+                                                  height: 85,
+                                                  width: 85,
                                                 ),
-                                                SizedBox(
-                                                  height: 8,
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    Text(
-                                                        "Atualizado em: ${_weatherList[index].getLastUpdate}",
-                                                        style: TextStyle(
-                                                            fontSize: 12,
-                                                            color: Colors.white,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .bold))
-                                                  ],
-                                                ),
-                                                SizedBox(
-                                                  height: 8,
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ],
+                                              ),
+                                              SizedBox(
+                                                height: 8,
+                                              ),
+                                              Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                          "Temperatura: ${_weatherList[index].temp} C",
+                                                          style: TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold)),
+                                                      SizedBox(
+                                                        height: 8,
+                                                      ),
+                                                      Text(
+                                                          "Descrição: ${_weatherList[index].description[0].toUpperCase() + _weatherList[index].description.substring(1)}",
+                                                          style: TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold)),
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 8,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      Text(
+                                                          "Atualizado em: ${_weatherList[index].getLastUpdate}",
+                                                          style: TextStyle(
+                                                              fontSize: 12,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold))
+                                                    ],
+                                                  ),
+                                                  SizedBox(
+                                                    height: 8,
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 ),
-                              ),
-                            ),
-                          );
+                              ));
                         },
                       ),
                     ),
