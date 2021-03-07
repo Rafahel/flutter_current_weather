@@ -34,7 +34,7 @@ class MainPage extends StatelessWidget {
                             style: TextStyle(color: Colors.white),
                           ),
                           actions: <Widget>[
-                            new FlatButton(
+                            new TextButton(
                               child: new Text("Fechar",
                                   style: TextStyle(fontSize: 16)),
                               onPressed: () {
