@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         theme:
             ThemeData(primarySwatch: Colors.blue, highlightColor: Colors.amber),
         home: BlocProvider(
-          builder: (context) => WeatherBloc(Repository()),
+          create: (context) => WeatherBloc(Repository()),
           child: MyHomePage(title: 'Current Weather'),
         ));
   }
@@ -70,9 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.white,
               ),
               onPressed: () {
-                final WeatherBloc weatherBloc =
-                    BlocProvider.of<WeatherBloc>(context);
+                WeatherBloc weatherBloc = BlocProvider.of<WeatherBloc>(context);
                 if (weatherBloc.state is WeatherIsNotSearchedState) {
+                  weatherBloc.close();
                   exit(0);
                 } else {
                   weatherBloc.add(ResetWeatherEvent());
