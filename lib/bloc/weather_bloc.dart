@@ -14,7 +14,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   Repository weatherRepo;
   Set<WeatherModel> weatherList = Set<WeatherModel>();
 
-  WeatherBloc(this.weatherRepo) : super() {
+  WeatherBloc(this.weatherRepo) : super(null) {
     this.add(LoadFromDbEvent());
   }
 
@@ -23,7 +23,6 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   List<WeatherModel> get getWeatherList =>
       weatherList.toList()..sort((a, b) => a.cityName.compareTo(b.cityName));
 
-  @override
   WeatherState get initialState => WeatherIsLoadingState();
 
   @override
@@ -64,7 +63,7 @@ class WeatherBloc extends Bloc<WeatherEvent, WeatherState> {
   }
 
   Future<void> _updateAsync() async {
-    List<WeatherModel> updatedList = List<WeatherModel>();
+    List<WeatherModel> updatedList = <WeatherModel>[];
     await Future.forEach(getWeatherList, (element) async {
       WeatherModel updatedWeather =
           await weatherRepo.getWeather(element.cityName);
