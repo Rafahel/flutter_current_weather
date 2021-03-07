@@ -158,7 +158,7 @@ class CurrentWeatherWidget extends StatelessWidget {
               Container(
                 width: double.infinity,
                 height: 50,
-                child: FlatButton(
+                child: TextButton(
                   onPressed: () {
                     Navigator.pop(context, SaveWeatherEvent(weatherModel));
                   },
@@ -167,9 +167,11 @@ class CurrentWeatherWidget extends StatelessWidget {
                           fontSize: 18,
                           color: Colors.white,
                           fontWeight: FontWeight.bold)),
-                  color: Colors.lightGreen,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0)),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => Colors.lightGreen),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(30)))),
                 ),
               ),
               SizedBox(
@@ -178,7 +180,7 @@ class CurrentWeatherWidget extends StatelessWidget {
               Container(
                 width: double.infinity,
                 height: 50,
-                child: FlatButton(
+                child: TextButton(
                   onPressed: () {
                     Navigator.pop(context, ResetWeatherEvent());
                   },
@@ -187,9 +189,11 @@ class CurrentWeatherWidget extends StatelessWidget {
                           fontSize: 18,
                           color: Colors.white,
                           fontWeight: FontWeight.bold)),
-                  color: Colors.lightBlue,
-                  shape: RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0)),
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateColor.resolveWith(
+                          (states) => Colors.lightBlue),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(30)))),
                 ),
               ),
             ],
