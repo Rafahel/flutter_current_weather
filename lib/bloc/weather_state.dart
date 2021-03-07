@@ -27,7 +27,7 @@ class WeatherIsLoadedState extends WeatherState {
 }
 
 class WeatherIsNotLoadedState extends WeatherState {
-  String error;
+  final String error;
   WeatherIsNotLoadedState(this.error);
 }
 

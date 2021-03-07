@@ -21,24 +21,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      builder: (context) => ThemeBloc(),
-      child: BlocBuilder<ThemeBloc, ThemeState>(
-        builder: (context, state) {
-          return MaterialApp(
-              routes: {
-                SelectedWeatherScreen.routeName: (context) =>
-                    SelectedWeatherScreen(),
-              },
-              title: 'Current Weather App',
-              theme: appThemes[BlocProvider.of<ThemeBloc>(context).theme],
-              home: BlocProvider(
-                builder: (context) => WeatherBloc(Repository()),
-                child: MyHomePage(title: 'Current Weather'),
-              ));
+    return MaterialApp(
+        routes: {
+          CurrentWeatherScreen.routeName: (context) => CurrentWeatherScreen(),
         },
-      ),
-    );
+        title: 'Current Weather App',
+        theme:
+            ThemeData(primarySwatch: Colors.blue, highlightColor: Colors.amber),
+        home: BlocProvider(
+          builder: (context) => WeatherBloc(Repository()),
+          child: MyHomePage(title: 'Current Weather'),
+        ));
   }
 }
 
@@ -74,9 +67,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.white,
               ),
               onPressed: () {
-                final WeatherBloc weatherBloc =
-                    BlocProvider.of<WeatherBloc>(context);
+                WeatherBloc weatherBloc = BlocProvider.of<WeatherBloc>(context);
                 if (weatherBloc.state is WeatherIsNotSearchedState) {
+                  weatherBloc.close();
                   exit(0);
                 } else {
                   weatherBloc.add(ResetWeatherEvent());
