@@ -60,7 +60,7 @@ class SearchComponent extends StatelessWidget {
           Container(
             width: double.infinity,
             height: 50,
-            child: FlatButton(
+            child: TextButton(
               onPressed: () {
                 _onWeatherSearch(context, _textController.text);
               },
@@ -69,9 +69,11 @@ class SearchComponent extends StatelessWidget {
                       fontSize: 24,
                       color: Colors.white,
                       fontWeight: FontWeight.bold)),
-              color: Colors.green,
-              shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(30.0)),
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateColor.resolveWith((states) => Colors.green),
+                  shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                      borderRadius: new BorderRadius.circular(30)))),
             ),
           ),
         ],
@@ -82,7 +84,7 @@ class SearchComponent extends StatelessWidget {
   _onWeatherSearch(BuildContext context, text) {
     FocusScope.of(context).unfocus();
     if (text.isEmpty) {
-      Scaffold.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
         content: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
