@@ -1,3 +1,5 @@
+import 'package:current_weather/appTheme.dart';
+import 'package:current_weather/bloc/theme_bloc.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,8 @@ class CityListWidgetState extends State<CityListWidget> {
     return BlocBuilder<WeatherBloc, WeatherState>(builder: (context, state) {
       _weatherList =
           BlocProvider.of<WeatherBloc>(context).getWeatherList.toList();
+
+      final AppTheme theme = BlocProvider.of<ThemeBloc>(context).theme;
 
       return Row(
         children: [
@@ -42,6 +46,8 @@ class CityListWidgetState extends State<CityListWidget> {
                           return Container(
                               padding: EdgeInsets.only(bottom: 8),
                               child: Card(
+                                color: theme == AppTheme.Night ? Colors.deepPurple.withAlpha(75) :
+                                Colors.white.withAlpha(75),
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),
@@ -80,6 +86,7 @@ class CityListWidgetState extends State<CityListWidget> {
                                                       _weatherList[index]
                                                           .cityName,
                                                       style: TextStyle(
+                                                        color: theme == AppTheme.Night ? Colors.white : Colors.black,
                                                           fontSize: 26,
                                                           fontWeight:
                                                               FontWeight.bold)),
@@ -114,6 +121,7 @@ class CityListWidgetState extends State<CityListWidget> {
                                                       Text(
                                                           "Temperatura: ${_weatherList[index].temp} C",
                                                           style: TextStyle(
+                                                            color: theme == AppTheme.Night ? Colors.white : Colors.black,
                                                               fontSize: 18,
                                                               fontWeight:
                                                                   FontWeight
@@ -124,6 +132,7 @@ class CityListWidgetState extends State<CityListWidget> {
                                                       Text(
                                                           "Descrição: ${_weatherList[index].description[0].toUpperCase() + _weatherList[index].description.substring(1)}",
                                                           style: TextStyle(
+                                                            color: theme == AppTheme.Night ? Colors.white : Colors.black,
                                                               fontSize: 18,
                                                               fontWeight:
                                                                   FontWeight
@@ -140,6 +149,7 @@ class CityListWidgetState extends State<CityListWidget> {
                                                       Text(
                                                           "Atualizado em: ${_weatherList[index].getLastUpdate}",
                                                           style: TextStyle(
+                                                            color: theme == AppTheme.Night ? Colors.white : Colors.black,
                                                               fontSize: 12,
                                                               fontWeight:
                                                                   FontWeight

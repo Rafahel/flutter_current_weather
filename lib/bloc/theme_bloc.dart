@@ -8,7 +8,7 @@ part 'theme_event.dart';
 part 'theme_state.dart';
 
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
-  ThemeBloc() : super();
+  ThemeBloc() : super(null);
   AppTheme theme = AppTheme.Night;
   String flareAsset = "assets/background.flr";
   String flareAnimation = "0";
